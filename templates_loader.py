@@ -3,6 +3,7 @@ import json
 import mimetypes
 import logging
 import os
+import pathlib
 import requests
 import sys
 
@@ -94,11 +95,11 @@ def extract_files(template_dir):
     files = []
     for root, file, filepath in walk_files(template_dir):
         if file != TEMPLATE_FILENAME and is_text_file(file) and '.git' not in filepath:
-            rel_path = os.path.relpath(filepath, template_dir)
+            rel_path = pathlib.Path(filepath).relative_to(template_dir)
             with open(filepath, mode='r', encoding='utf-8') as f:
                 content = f.read()
             files.append({
-                'fileName': rel_path,
+                'fileName': rel_path.as_posix(),
                 'content': content
             })
     return files
@@ -108,11 +109,11 @@ def extract_assets(template_dir):
     assets = []
     for root, file, filepath in walk_files(template_dir):
         if file != TEMPLATE_FILENAME and not is_text_file(file) and '.git' not in filepath:
-            rel_path = os.path.relpath(filepath, template_dir)
+            rel_path = pathlib.Path(filepath).relative_to(template_dir)
             content_type = mimetypes.guess_type(file)[0]
             if content_type is None:
                 content_type = 'application/octet-stream'
-            assets.append((rel_path, filepath, content_type))
+            assets.append((rel_path.as_posix(), filepath, content_type))
     return assets
 
 

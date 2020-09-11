@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='dsw_template_loader',
-    version='0.1',
+    version='0.1.1',
     description='A simple tool for uploading DSW templates',
     author='Marek Suchánek',
     author_email='marek.suchanek@fit.cvut.cz',
